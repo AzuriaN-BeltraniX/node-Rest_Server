@@ -1,47 +1,26 @@
 const express = require('express');
 const app = express();
 require('./config/config');
+const mongoose = require('mongoose');
 
 const bodyParser = require('body-parser');
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
  
 // parse application/json
-app.use(bodyParser.json())
- 
-app.get('/usuario', function (req, res) {
-  res.json('get Usuario')
+app.use(bodyParser.json());
+
+// Configuración Global de rutas 
+app.use(require('./routes/index'));
+
+mongoose.connect(process.env.URLDB, 
+    {useNewUrlParser: true, useCreateIndex: true}, 
+    (err, res) => {
+    if (err) throw err;
+
+    console.log('Base de Datos ONLINE');
+    
 });
-
-app.post('/usuario', function (req, res) {
-
-    let body = req.body;
-
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre es necesario'
-        });
-    } else {
-        res.json({
-            persona: body
-        })
-    }
-
-});
-
-app.put('/usuario/:id', function (req, res) {
-
-    let id = req.params.id;
-
-    res.json({
-        id
-    });
-});
-
-app.delete('/usuario', function (req, res) {
-    res.json('delete Usuario')
-  });
 
 app.listen(process.env.PORT, () => {
     console.log('Esuchando el puerto: ', process.env.PORT);
