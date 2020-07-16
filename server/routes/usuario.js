@@ -33,14 +33,14 @@ app.get('/usuario', verificaToken, (req, res) => {
             });
         };
 
-    Usuario.count({estado: true}, (err, conteo) => {
-        res.json({
-            Ok: true,
-            usuarios,
-            cuantos: conteo
-        })
-    })
-    })
+        Usuario.count({estado: true}, (err, conteo) => {
+            res.json({
+                Ok: true,
+                usuarios,
+                cuantos: conteo
+            })
+        });
+    });
 });
   
 app.post('/usuario', [verificaToken, verificaRol], function (req, res) {
@@ -89,8 +89,7 @@ app.put('/usuario/:id', [verificaToken, verificaRol], function (req, res) {
             ok: true,
             usuario: usuarioDB
         });
-    })
-
+    });
 });
   
 app.delete('/usuario/:id', [verificaToken, verificaRol], function (req, res) {
